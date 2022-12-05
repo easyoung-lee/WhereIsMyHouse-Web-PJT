@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper
+	namespace="com.ssafy.spring.house.model.mapper.HouseInfoDao">
+
+	<!-- 자주 사용하는 where 조건을 지정해서 재사용 -->
+	<sql id='searchcon'>
+		<choose>
+			<when test="sido == ''">
+				<if test="aptName != null">
+					aptName like concat('%',#{aptName},'%')
+				</if>
+			</when>
+			<otherwise>
+				sidoName = (select s.sidoName from sidocode s where
+				sidoCode = #{sido}) 
+				<if test="gugun != null">
+					and gugunName = (select g.gugunName from guguncode g
+					where
+					gugunCode = #{gugun}) 
+				</if>
+				<if test="dong != null">
+					and hi.dongName = (select d.dongName from dongcode d
+					where
+					dongCode = #{dong}) 
+				</if>
+				<if test="aptName != null">
+					and aptName like concat('%',#{aptName},'%')
+				</if>
+			</otherwise>
+		</choose>
+	</sql>
+
+	<select id="searchEach" parameterType="map"
+		resultType="houseInfo">
+		select no, sidoName,
+		gugunName, d.dongName as dongName, aptName,
+		buildYear, jibun, lat,
+		lng, dealAmount, dealYear, dealMonth, dealDay,
+		area, floor, type
+		FROM houseinfo hi
+		left join dongcode d
+		on hi.dongCode =
+		d.dongCode
+		left join housedeal hd
+		on hi.aptCode = hd.aptCode
+		<where>
+			<include refid="searchcon" />
+		</where>
+		limit #{pgno}, 15
+	</select>
+	
+	<select id="search" parameterType="int" resultType="houseInfo">
+		select no, sidoName,
+		gugunName, d.dongName as dongName, aptName,
+		buildYear, jibun, lat,
+		lng, dealAmount, dealYear, dealMonth, dealDay,
+		area, floor, type
+		FROM houseinfo hi
+		left join dongcode d
+		on hi.dongCode =
+		d.dongCode
+		left join housedeal hd
+		on hi.aptCode = hd.aptCode
+		where no = #{no}
+	</select>
+	
+	<select id="searchBookMark" parameterType="string" resultType="houseInfo">
+		select hi.*, sidoName, gugunName, hd.dealAmount, max(hd.dealYear) year, max(hd.dealMonth) month, max(hd.dealDay) day
+		FROM houseinfo hi		
+		left join housedeal hd
+		on hi.aptCode = hd.aptCode
+		left join dongcode d
+		on hi.dongCode = d.dongCode
+		group by aptCode
+	    having dongCode = #{dongCode}
+	</select>
+
+</mapper>

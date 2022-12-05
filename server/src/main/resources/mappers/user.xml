@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	
+<!-- name space는 UserRepo의 fully qualified name으로 설정한다. -->
+<mapper namespace="com.ssafy.spring.member.model.mapper.UserDao">
+
+	<!-- 회원 기본 기능 -->
+	
+	<!--<select id="select" parameterType="user" resultType="user">
+		select * from user 
+		where id = #{id} and pass = #{pass}
+	</select>-->
+	
+	<insert id="userRegister" parameterType="userDto">
+		insert into user (id, name, pass, phone)
+		values (#{id}, #{name}, #{pass}, #{phone})
+	</insert>
+	
+	<!--<select id="search" parameterType="String" resultType="user">
+		select * from user 
+		where id = #{id}
+	</select>-->
+	
+	<update id="userUpdate" parameterType="userDto">
+		update user 
+		set pass = #{pass}, name = #{name}, phone = #{phone} 
+		where id = #{id}
+	</update>
+	
+	<delete id="userDelete" parameterType="String">
+		delete from user where id = #{id}
+	</delete>
+	
+	<!-- 로그인 Token -->
+	
+	<select id="login" parameterType="userDto" resultType="userDto">
+		select name, id, phone
+		from user
+		where id = #{id} and pass = #{pass}
+	</select>
+	
+	<select id="userInfo" parameterType="string" resultType="userDto">
+		select name, id, phone, pass
+		from user
+		where id = #{id}
+	</select>
+	
+	<update id="saveRefreshToken" parameterType="map">
+		update user
+		set token = #{token}
+		where id = #{id}
+	</update>
+	
+	<select id="getRefreshToken" parameterType="string" resultType="string">
+		select token
+		from user
+		where id = #{id}
+	</select>
+	
+	<update id="deleteRefreshToken" parameterType="map">
+		update user
+		set token = #{token, jdbcType=VARCHAR}
+		where id = #{id}
+	</update>
+	
+</mapper>

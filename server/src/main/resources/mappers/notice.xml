@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- name space는 UserRepo의 fully qualified name으로 설정한다. -->
+<mapper
+	namespace="com.ssafy.spring.member.model.mapper.NoticeDao">
+
+	<!-- 자주 사용하는 where 조건을 지정해서 재사용 -->
+	<sql id='searchcon'>
+		<if test="word != null and word !='' ">
+			title like concat('%',#{word},'%')
+			<!-- <choose> <when test=" key =='isbn'"> isbn = #{word} </when> <when 
+				test=" key =='title'"> </when> <when test=" key =='author'"> author like 
+				concat('%',#{word},'%') </when> </choose> -->
+		</if>
+	</sql>
+
+	<select id='NoticeSelect' parameterType="int" resultType="NoticeDto">
+		select *
+		from notice 
+		where no = #{no}
+	</select>
+	
+	<select id='NoticeSearch' resultType="NoticeDto">
+		select *
+		from notice 
+		order by date desc
+	</select>
+
+	<insert id='NoticeInsert' parameterType="NoticeDto">
+		insert into
+		notice(title, content, id)
+		values ( #{title}, #{content}, #{id})
+	</insert>
+
+	<update id='NoticeUpdate' parameterType="NoticeDto">
+		update notice 
+		set title = #{title},content= #{content}
+		where no = #{no}
+	</update>
+
+	<delete id="NoticeDelete" parameterType="int">
+		delete from notice 
+		where no = #{no}
+	</delete>
+	
+	
+
+</mapper>

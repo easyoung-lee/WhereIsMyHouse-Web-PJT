@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- name space는 UserRepo의 fully qualified name으로 설정한다. -->
+<mapper
+	namespace="com.ssafy.spring.member.model.mapper.QuestionDao">
+
+	<!-- 자주 사용하는 where 조건을 지정해서 재사용 -->
+	<sql id='searchcon'>
+		<if test="word != null and word !='' ">
+			title like concat('%',#{word},'%')
+			<!-- <choose> <when test=" key =='isbn'"> isbn = #{word} </when> <when 
+				test=" key =='title'"> </when> <when test=" key =='author'"> author like 
+				concat('%',#{word},'%') </when> </choose> -->
+		</if>
+	</sql>
+
+	<select id="questionSearchAll" parameterType="PageBean"
+		resultType="QuestionDto">
+		select * from question
+		<where>
+			<include refid="searchcon" />
+		</where>
+		order by date desc
+		limit #{start}, #{interval}
+	</select>
+
+	<!-- <select id="questionSearchMy" parameterType="PageBean"
+		resultType="QuestionDto">
+		select * from question
+		<where>
+			id = #{id}
+			<if test="word != null and word !='' ">
+				and title like concat('%',#{word},'%')
+			</if>
+		</where>
+		order by date desc
+		limit #{start}, #{interval}
+	</select> -->
+
+	<select id='totalCountAll' parameterType="PageBean"
+		resultType="int">
+		select count(*) as cnt from question
+		<where>
+			<include refid="searchcon" />
+		</where>
+
+	</select>
+	
+	<select id='totalCountMy' parameterType="PageBean"
+		resultType="int">
+		select count(*) as cnt from question
+		<where>
+			id = #{id}
+			<if test="word != null and word !='' ">
+				and title like concat('%',#{bean.word},'%')
+			</if>
+		</where>
+
+	</select>
+
+	<select id='questionSelect' parameterType="int" resultType="QuestionDto">
+		select *
+		from
+		question where no = #{no}
+	</select>
+
+	<insert id='questionInsert' parameterType="QuestionDto">
+		insert into
+		question(title,
+		content, id)
+		values ( #{title}, #{content}, #{id})
+	</insert>
+
+	<update id='questionUpdate' parameterType="QuestionDto">
+		update question set title =
+		#{title}
+		,content= #{content}
+		where
+		no = #{no}
+	</update>
+
+	<delete id="questionDelete" parameterType="int">
+		delete from question where no
+		= #{no}
+	</delete>
+
+</mapper>

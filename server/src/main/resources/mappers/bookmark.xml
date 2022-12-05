@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper
+	namespace="com.ssafy.spring.bookmark.model.mapper.BookMarkDao">
+
+	<resultMap type="HashMap" id="bookmarkMap">
+		<id column="dongCode" property="dongCode"></id>
+		<id column="address" property="address"></id>
+	</resultMap>
+	
+	<insert id="insert" parameterType="map">
+		insert into bookmark (user_id, dongCode)
+		values (#{user_id}, #{dongCode})
+	</insert>
+
+	<select id="search" parameterType="string" resultMap="bookmarkMap">
+		select user_id, d.dongCode, concat(sidoName, ' ', gugunName, ' ', dongName) as address from bookmark b 
+		left join dongcode d
+		on b.dongCode = d.dongCode
+		where user_id = #{user_id}
+		order by id desc
+	</select>
+	
+	<delete id="remove" parameterType="map">
+		delete from bookmark 
+		where user_id = #{user_id} and dongCode = #{dongCode}
+	</delete>
+	
+</mapper>
