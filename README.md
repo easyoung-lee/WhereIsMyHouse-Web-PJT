@@ -16,6 +16,19 @@
 
 - 2022년 11월 17일 ~ 2021년 11월 24일
 
-<br>
+<br><br>
 
-<br>
+## 기술 스택
+
+<p align="center">
+  <img src="https://img.shields.io/badge/API-Kakao_Map-red?style=flat"> 
+  <img src="https://img.shields.io/badge/Library-vue_Bootstrap-563D7C?style=flat&logo=bootstrap&logoColor=white"> 
+  <img src="https://img.shields.io/badge/Language-Java-007396?style=flat&logo=java&logoColor=white"> 
+  <img src="https://img.shields.io/badge/Language-JavaScript-F7DF1E?style=flat&logo=javascript&logoColor=white"> 
+  <img src="https://img.shields.io/badge/Database-MySql-F80000?style=flat&logo=mysql&logoColor=white"> 
+  <img src="https://img.shields.io/badge/Framework-Vue-D22128?style=flat&logo=vue.js&logoColor=white"> 
+  <img src="https://img.shields.io/badge/Framework-SpringFramework-6DB33F?style=flat&logo=spring&logoColor=white">
+
+</p>
+
+###### <br><br>
